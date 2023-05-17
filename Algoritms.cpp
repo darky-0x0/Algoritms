@@ -2627,4 +2627,4 @@ void PreviewStep(vector<int>& field, vector<int>& queensField, int index, int si
 #pragma endregion
 
 
-//хелоу
+//хелоу [fqf[f[ q[wf[q
