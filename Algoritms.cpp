@@ -725,7 +725,7 @@ void task10() {
 
 	vector<int> queensIndexes;
 
-	vector<int> result(n * n, 0);
+	vector<int> result(2*n, 0);
 
 	int fields = 0;
 
@@ -2286,18 +2286,24 @@ void SmallestNumberOfMoves(vector<int>& MainField, vector<int>& queensIndexes, v
 
 			//считаем возможные шаги
 			NextStep(tempSteps, pos);
+			
+			int a;
+			int b;
+			int k;
 
 			if (n % 2 == 1) {
-				int a = MainField.size();
-				int b = 0;
+				a = MainField.size()-1;
+				b = -1;
+				k = -1;
 			}
 			else {
-				int a = 0;
-				int b = MainField.size();
+				a = 0;
+				b = MainField.size();
+				k = 1;
 			}
 			
 			//цикл (перебираем поле с возможными шагами)
-			for (int i = MainField.size(); i >= 0; i++) {
+			for (int i = a; (i > b) || (i < b); i+=k) {
 				
 				//если клетка доступна для хода
 				if (tempSteps[i] == 1) {
@@ -2313,7 +2319,7 @@ void SmallestNumberOfMoves(vector<int>& MainField, vector<int>& queensIndexes, v
 					queensIndexes.push_back(i);
 
 					//если текущее количество шагов превышает рекордно-минимальное или нет новых битых клеток: шаг назад; продолжить
-					if ((result.size() <= queensIndexes.size()) || (GetEmpty(MainField) == beforeEmpty)) {
+					if ((result.size() < queensIndexes.size()) || (GetEmpty(MainField) == beforeEmpty)) {
 
 						PreviewStep(MainField, oneStep);
 						queensIndexes.erase(queensIndexes.end() - 1); //откат в случае неудачного хода
@@ -2330,7 +2336,9 @@ void SmallestNumberOfMoves(vector<int>& MainField, vector<int>& queensIndexes, v
 					PreviewStep(MainField, oneStep);
 
 				}
+
 			}
+
 		}
 
 	}
