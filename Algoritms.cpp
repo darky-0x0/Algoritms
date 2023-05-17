@@ -2625,3 +2625,6 @@ void PreviewStep(vector<int>& field, vector<int>& queensField, int index, int si
 #pragma region lab7
 
 #pragma endregion
+
+
+//хелоу
