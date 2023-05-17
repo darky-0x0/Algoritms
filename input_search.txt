@@ -1,0 +1,30 @@
+10 2
+abaabababaabababaaabab
+baaab
+
+aaaaaaaaaaaaaaaaaaab
+aaaaaaab
+
+hello world this is word
+world
+
+abcdefgabcdefgabcdefg
+qbcdefg
+
+ppooopoopppopoppop
+pop
+
+bacbababaabcbab
+abababca
+
+bffffbbbfbfffbfb
+bfb
+
+abcabcabcabcabcaacabc
+aac
+
+abcdefabcdfgacbdefgacbdrfgacbdefg
+acddf
+
+xyhzxyxcxyxzxyx
+xyx

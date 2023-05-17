@@ -1,0 +1,32 @@
+#	Примеры						Алгоритмы поиска подстроки в строке, количество сравнений символов	Комментарии
+ 								Линейный	Бойлера-Мура	Кнута–Морриса–Пратта	Карпа–Рабина	
+1	abaabababaabababaaabab
+ 	baaab	
+									34		18			26				32		
+2	aaaaaaaaaaaaaaaaaaab
+ 	aaaaaaab	
+									104		20			22				14		
+3	hello world this is word
+ 	world	
+									11		7			11				8		
+4	abcdefgabcdefgabcdefg
+ 	qbcdefg	
+									15		21			21				15		
+5	ppooopoopppopoppop
+ 	pop	
+									20		17			18				15		
+6	bacbababaabcbab
+ 	abababca	
+									17		5			19				8		
+7	bffffbbbfbfffbfb
+ 	bfb	
+									14		12			13				12		
+8	abcabcabcabcabcaacabc
+ 	aac	
+									23		13			23				18		
+9	abcdefabcdfgacbdefgacbdrfgacbdefg
+ 	acddf	
+									37		10			38				29		
+10	xyhzxyxcxyxzxyx
+ 	xyx	
+									9		5			8				6		
