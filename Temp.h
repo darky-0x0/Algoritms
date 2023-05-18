@@ -1,20 +1,16 @@
 #pragma once
-#include <vector>
+#include <cmath>
 #include <iostream>
-#include <conio.h>
+#include <fstream>
+#include <vector>
 
-using namespace std;
+void walker();
 
-void second_solve();
+void countQueensMoves(int i, int j, int& N, int& countMoves, int& minMoves, int numberOfNotPassedFields, std::vector<std::vector<int>>& board, int lastDirection);
 
-void second_solve(vector<int>&, vector<int>&, int, int&, vector<int>&);
+void move(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, int direction, int moveNumber);
 
-int get_empty(vector<int>);
+void cancelMove(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, int direction, int moveNumber);
 
-void print_field(vector<int>&, int);
+void printPath();
 
-void place_queen(vector<int>&, vector<int>&, int);
-
-void remove_queen(vector<int>&, vector<int>&, int);
-
-void print(vector<int>&);

@@ -24,6 +24,30 @@ void task9();
 void task10();
 void task11();
 void task12();
+void task13();
+void task14();
+
+void task15();
+void task16();
+void task17();
+void task18();
+
+void task19();
+void task20();
+void task21();
+void task22();
+void task23();
+void task24();
+
+void task25();
+void task26();
+void task27();
+void task28();
+void task29();
+void task30();
+void task31();
+
+void task32();
 
 #pragma endregion
 
@@ -133,61 +157,64 @@ int main()
 			task12();
 			break;
 		case 13: system("cls");
-			task12();
+			task13();
 			break;
 		case 14: system("cls");
-			task12();
+			task14();
 			break;
 		case 15: system("cls");
-			task12();
+			task15();
 			break;
 		case 16: system("cls");
-			task12();
+			task16();
 			break;
 		case 17: system("cls");
-			task12();
+			task17();
 			break;
 		case 18: system("cls");
-			task12();
+			task18();
 			break;
 		case 19: system("cls");
-			task12();
+			task19();
 			break;
 		case 20: system("cls");
-			task12();
+			task20();
 			break;
 		case 21: system("cls");
-			task12();
+			task21();
 			break;
 		case 22: system("cls");
-			task12();
+			task22();
 			break;
 		case 23: system("cls");
-			task12();
+			task23();
 			break;
 		case 24: system("cls");
-			task12();
+			task24();
 			break;
 		case 25: system("cls");
-			task12();
+			task25();
 			break;
 		case 26: system("cls");
-			task12();
+			task26();
 			break;
 		case 27: system("cls");
-			task12();
+			task27();
 			break;
 		case 28: system("cls");
-			task12();
+			task28();
 			break;
 		case 29: system("cls");
-			task12();
+			task29();
 			break;
 		case 30: system("cls");
-			task12();
+			task30();
 			break;
 		case 31: system("cls");
-			task12();
+			task31();
+			break;
+		case 32: system("cls");
+			task32();
 			break;
 		case 0: rev = false;
 			break;
@@ -877,6 +904,13 @@ void task30() {
 }
 
 void task31() {
+
+}
+
+//ТЕСТЫ
+void task32() {
+
+	walker();
 
 }
 
@@ -2627,4 +2661,3 @@ void PreviewStep(vector<int>& field, vector<int>& queensField, int index, int si
 #pragma endregion
 
 
-//хелоу [fqf[f[ q[wf[q

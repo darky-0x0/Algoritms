@@ -1,296 +1,149 @@
 #include "Temp.h"
-int turn = 0;
-void second_solve() {
 
-	int n; cout << "Enter size: "; cin >> n;
+std::vector<int> di{ -1, -1, 0, 1, 1, 1, 0, -1 };
+std::vector<int> dj{ 0, 1, 1, 1, 0, -1, -1, -1 };
+std::vector<std::vector<int>> path;
+std::vector<std::vector<int>> minPath;
 
-	vector<int> board(n * n, 0);
 
-	vector<int> queens(n, -1);
+void walker() {
+	int N;
+	std::cout << "Enter size: "; std::cin >> N;
 
-	vector<int> result(n, -1);
+	std::vector<std::vector<int>> board(N, std::vector<int>(N, 0));
 
-	int fields = 0;
+	int minMoves = 2 * N;
 
-	second_solve(board, queens, n, fields, result);
+	int countMoves = 0;
 
-	print_field(result, fields);
+	for (int i = 0; i <= (N - 1) / 2; ++i)
+	{
+		for (int j = 0; j <= (N - 1) / 2; ++j)
+		{
+			std::cout << i << ' ' << j << std::endl;
+
+			board[i][j] = 1;
+
+			path.push_back({ i, j });
+
+			countQueensMoves(i, j, N, countMoves, minMoves, N * N - 1, board, -8);
+
+			path.pop_back();
+
+			board[i][j] = 0;
+
+		}
+	}
+
+
+	std::cout << "The shortest path consists of " << minMoves << " moves\n";
+	printPath();
 }
 
-void second_solve(vector<int>& board, vector<int>& queens, int N, int& result, vector<int>& result_queens)
+void countQueensMoves(int i, int j, int& N, int& countMoves, int& minMoves, int numberOfNotPassedFields, std::vector<std::vector<int>>& board, int lastDirection)
 {
-	if (N == 0) {
-
-		result = get_empty(board);
-
-		result_queens = queens;
+	if (numberOfNotPassedFields == 0)
+	{
+		if (countMoves < minMoves)
+		{
+			minMoves = countMoves;
+			if (N == 1) minMoves = 1;
+			minPath = path;
+		}
 	}
-	else {
+	else
+	{
+		for (int k = 0; k < 8; ++k)
+		{
+			if (k != lastDirection && k != (lastDirection + 4) % 8)
+			{
+				int numberOfCompletedFieldsPerTurn = 0;
 
-		int index = 0;
+				for (int w = 1; w < N; ++w)
+				{
+					int ni = i + w * di[k];
 
-		for (int i = 0; i < queens.size(); ++i) {
+					int nj = j + w * dj[k];
 
-			if (queens[i] != -1) {
+					if (ni >= 0 && ni < N && nj >= 0 && nj < N && board[ni][nj] == 0)
+					{
+						++numberOfCompletedFieldsPerTurn;
 
-				index = queens[i] + 1;
+						if (countMoves + 1 < minMoves && minMoves - countMoves - 1 < 2 * ((int)sqrt(numberOfNotPassedFields - numberOfCompletedFieldsPerTurn) + 1))
+						{
+							++countMoves;
 
+							move(i, j, ni, nj, board, k, countMoves);
+
+							countQueensMoves(ni, nj, N, countMoves, minMoves, numberOfNotPassedFields - numberOfCompletedFieldsPerTurn, board, k);
+
+							cancelMove(i, j, ni, nj, board, k, countMoves);
+
+							--countMoves;
+
+						}
+					}
+				}
 			}
-
 		}
-
-		for (int i = index; i < board.size(); ++i) {
-
-			place_queen(board, queens, i);
-
-
-
-			if (get_empty(board) <= result) {
-
-				remove_queen(board, queens, i);
-
-				continue;
-
-			}
-
-			//cout << turn++ << endl;
-			/*print(queens);
-			_getch();*/
-
-			second_solve(board, queens, N - 1, result, result_queens);
-
-			remove_queen(board, queens, i);
-		}
-
 	}
-
 }
 
-int get_empty(vector<int> board) {
+void move(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, int direction, int moveNumber)
+{
+	do
+	{
+		i += di[direction];
 
-	int count = 0;
-	for (int i = 0; i < board.size(); ++i) {
+		j += dj[direction];
 
-		if (!board[i]) {
+		if (board[i][j] == 0)
+		{
 
-			count++;
+			board[i][j] = moveNumber;
 
 		}
 
-	}
-	return count;
+	} while (i != ni || j != nj);
+
+	path.push_back({ ni, nj });
 }
 
-void print_field(vector<int>& queens, int result) {
+void cancelMove(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, int direction, int moveNumber)
+{
+	do
+	{
+		i += di[direction];
 
-	int k = 0;
+		j += dj[direction];
 
-	for (int i = 0; i < queens.size() * queens.size(); ++i) {
+		if (board[i][j] == moveNumber)
+		{
 
-		if (i % queens.size() == 0) {
-			cout << endl;
-		}
-		if (k != queens.size() && queens[k] == i) {
-
-			cout << "F ";
-
-			k++;
-
-			continue;
+			board[i][j] = 0;
 
 		}
 
-		cout << "- ";
-	}
-	cout << "Max empty fields is - " << result << endl;
+	} while (i != ni || j != nj);
+
+	path.pop_back();
 }
 
-void place_queen(vector<int>& board, vector<int>& queens, int pos) {
+void printPath()
+{
+	std::ofstream fout("out.txt");
 
-	int size = queens.size();
+	for (int i = 0; i < minPath.size(); ++i)
+	{
+		fout << (char)(97 + minPath[i][1]) << minPath[i][0] + 1;
+		if (i + 1 < minPath.size())
+		{
 
-	int h = pos / queens.size();
-
-	int v = pos % queens.size();
-
-	int index;
-
-	for (int i = 0; i < queens.size(); ++i) {
-
-		index = i + h * size;
-
-
-
-		board[index]++;
-
-
-
-		index = v + i * size;
-
-
-
-		board[index]++;
-
-
-
-	}
-
-	// UP LEFT
-	for (int dh = h - 1, dv = v - 1; dh >= 0 && dv >= 0; --dv, --dh) {
-
-		index = dh * size + dv;
-
-		board[index]++;
-
-	}
-
-	// UP RIGHT
-	for (int dh = h - 1, dv = v + 1; dh >= 0 && dv < size; --dh, ++dv) {
-		index = dh * size + dv;
-
-		board[index]++;
-
-	}
-
-	// DOWN LEFT
-	for (int dh = h + 1, dv = v - 1; dh < size && dv >= 0; ++dh, --dv) {
-
-		index = dh * size + dv;
-
-
-		board[index]++;
-
-
-	}
-
-	// DOWN RIGHT
-	for (int dh = h + 1, dv = v + 1; dh < size && dv < size; ++dh, ++dv) {
-		index = dh * size + dv;
-
-		board[index]++;
-
-	}
-
-	for (int i = 0; i < queens.size(); ++i) {
-
-		if (queens[i] == -1) {
-
-			queens[i] = pos;
-
-			break;
+			fout << '-';
 
 		}
-
 	}
 
-	board[pos] -= 1; // 1 ÐÀÇ ß ÓÂÅËÈ×ÈÂÀË ÏÎÇÈÖÈÞ ÊÎÐÎËÅÂÛ
-}
-
-void remove_queen(vector<int>& board, vector<int>& queens, int pos) {
-
-	int size = queens.size();
-
-	int h = pos / queens.size();
-
-	int v = pos % queens.size();
-
-	int index;
-
-	for (int i = 0; i < queens.size(); ++i) {
-
-		index = i + h * size;
-
-
-		board[index]--;
-
-
-
-		index = v + i * size;
-
-
-
-		board[index]--;
-
-
-
-	}
-
-	// UP LEFT
-	for (int dh = h - 1, dv = v - 1; dh >= 0 && dv >= 0; --dv, --dh) {
-
-		index = dh * size + dv;
-
-
-		board[index]--;
-
-	}
-
-	// UP RIGHT
-	for (int dh = h - 1, dv = v + 1; dh >= 0 && dv < size; --dh, ++dv) {
-		index = dh * size + dv;
-
-		board[index]--;
-
-	}
-
-	// DOWN LEFT
-	for (int dh = h + 1, dv = v - 1; dh < size && dv >= 0; ++dh, --dv) {
-
-		index = dh * size + dv;
-
-
-		board[index]--;
-
-
-	}
-
-	// DOWN RIGHT
-	for (int dh = h + 1, dv = v + 1; dh < size && dv < size; ++dh, ++dv) {
-		index = dh * size + dv;
-
-		board[index]--;
-
-	}
-
-	for (int i = 0; i < queens.size(); ++i) {
-
-		if (queens[i] == pos) {
-
-			queens[i] = -1;
-
-			break;
-
-		}
-
-	}
-
-	board[pos] += 1;
-
-}
-
-void print(vector<int>& queens) {
-
-	int k = 0;
-
-	for (int i = 0; i < queens.size() * queens.size(); ++i) {
-
-		if (i % queens.size() == 0) {
-
-			cout << endl;
-
-		}
-
-		if (k != queens.size() && queens[k] == i) {
-
-			cout << "F ";
-
-			k++;
-
-			continue;
-
-		}
-
-		cout << "- ";
-
-	}
+	fout << std::endl;
+	fout.close();
 }
