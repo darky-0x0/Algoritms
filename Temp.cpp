@@ -8,7 +8,9 @@ std::vector<std::vector<int>> minPath;
 
 void walker() {
 	int N;
-	std::cout << "Enter size: "; std::cin >> N;
+	std::cout << "Введите размерность шахматной доски: "; std::cin >> N;
+
+	system("cls");
 
 	std::vector<std::vector<int>> board(N, std::vector<int>(N, 0));
 
@@ -20,7 +22,8 @@ void walker() {
 	{
 		for (int j = 0; j <= (N - 1) / 2; ++j)
 		{
-			std::cout << i << ' ' << j << std::endl;
+
+			std::cout << "\n" << i << " " << j << "\n";
 
 			board[i][j] = 1;
 
@@ -36,8 +39,8 @@ void walker() {
 	}
 
 
-	std::cout << "The shortest path consists of " << minMoves << " moves\n";
-	printPath();
+	printPath(N);
+	std::cout << "Минимум " << minMoves << " ходов\n";
 }
 
 void countQueensMoves(int i, int j, int& N, int& countMoves, int& minMoves, int numberOfNotPassedFields, std::vector<std::vector<int>>& board, int lastDirection)
@@ -129,21 +132,13 @@ void cancelMove(int i, int j, int ni, int nj, std::vector<std::vector<int>>& boa
 	path.pop_back();
 }
 
-void printPath()
+void printPath(int N)
 {
-	std::ofstream fout("out.txt");
+	for (int i = 0; i < minPath.size(); i++) {
 
-	for (int i = 0; i < minPath.size(); ++i)
-	{
-		fout << (char)(97 + minPath[i][1]) << minPath[i][0] + 1;
-		if (i + 1 < minPath.size())
-		{
+		std::cout << minPath[i][0] * N + minPath[i][1] << " ";
 
-			fout << '-';
-
-		}
 	}
 
-	fout << std::endl;
-	fout.close();
+	std::cout << "\n";
 }

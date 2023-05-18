@@ -12,5 +12,5 @@ void move(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, in
 
 void cancelMove(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, int direction, int moveNumber);
 
-void printPath();
+void printPath(int N);
 
