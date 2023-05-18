@@ -2379,8 +2379,13 @@ void SmallestNumberOfMoves(int& minMoves, int& countMoves, vector<int>& MainFiel
 			//цикл (перебираем поле с возможными шагами) с наибольшим ходом
 			for (int i = a; (i > b) || (i < b); i+=k) {
 				
+				bool isQueenIndex(false);
+
+				//проверка, является ли текущий индекс уже пройденным
+				for (int t = 0; t < queensIndexes.size(); t++) if (queensIndexes[t] == i) isQueenIndex = true;
+
 				//заходим в случае, если клетка - путь, и она не повторяет прошлое направление и не совершает ход назад
-				if ((tempSteps[i] != 0) && ((lastDirection == 0) || (tempSteps[i] != lastDirection) && (tempSteps[i] != (((lastDirection+3) % 8) + 1)))) {
+				if ((tempSteps[i] != 0) && (isQueenIndex == false) && ((lastDirection == 0) || (tempSteps[i] != lastDirection) && (tempSteps[i] != (((lastDirection + 3) % 8) + 1)))) {
 
 					 //считаем число ходов для каждого направления
 					if (i < pos) {
