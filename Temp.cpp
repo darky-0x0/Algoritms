@@ -1,144 +1,224 @@
-#include "Temp.h"
+#include <iostream>
+#include <vector>
+#include <map>
 
-std::vector<int> di{ -1, -1, 0, 1, 1, 1, 0, -1 };
-std::vector<int> dj{ 0, 1, 1, 1, 0, -1, -1, -1 };
-std::vector<std::vector<int>> path;
-std::vector<std::vector<int>> minPath;
+using namespace std;
+
+const int M = 6;
+const int N = 6;
+
+// Варианты ходов коня
+map<int, pair<int, int>> MOVE_LIST = {
+        {1, pair<int, int>(-2, 1)},
+        {2, pair<int, int>(-1, 2)},
+        {3, pair<int, int>(1, 2)},
+        {4, pair<int, int>(2, 1)},
+        {5, pair<int, int>(2, -1)},
+        {6, pair<int, int>(1, -2)},
+        {7, pair<int, int>(-1, -2)},
+        {8, pair<int, int>(-2, -1)}
+};
+
+const int rateKnight[8][2] = { {-2, 1},{-1, 2},{1, 2},{2, 1},{2, -1},{1, -2},{-1, -2},{-2, -1} };
+
+void solve(int i, int j, vector<vector<int>>& field, int& moveCount, bool& isKingDefeated,
+    pair<int, int> kingPosition, pair<int, int> startPosition, bool& answerIsFinded);
+bool checkCell(int i, int j, vector<vector<int>>& field, bool isKingDefeated);
+void showField(vector<vector<int>>& field);
+
+void task366()
+{
+
+    pair<int, int> startPosition(3, 5);
+
+    pair<int, int> kingPosition(4, 1);
+
+    vector<pair<int, int>> burningCells;
+
+    vector<vector<int>> field(N);
+
+    for (int i = 0; i < field.size(); i++) {
+
+        field[i] = vector<int>(M, 0);
+
+    }
+
+    int moveCount = 1;
+
+    bool isKingDefeated = false;
+
+    bool answerIsFinded = false;
 
 
-void walker() {
-	int N;
-	std::cout << "Введите размерность шахматной доски: "; std::cin >> N;
 
-	system("cls");
+    // Добавление на поле горящих клеток
 
-	std::vector<std::vector<int>> board(N, std::vector<int>(N, 0));
+    for (size_t i = 0; i < burningCells.size(); i++)
 
-	int minMoves = 2 * N;
-
-	int countMoves = 0;
-
-	for (int i = 0; i <= (N - 1) / 2; ++i)
-	{
-		for (int j = 0; j <= (N - 1) / 2; ++j)
-		{
-
-			std::cout << "\n" << i << " " << j << "\n";
-
-			board[i][j] = 1;
-
-			path.push_back({ i, j });
-
-			countQueensMoves(i, j, N, countMoves, minMoves, N * N - 1, board, -8);
-
-			path.pop_back();
-
-			board[i][j] = 0;
-
-		}
-	}
+        field[burningCells[i].first][burningCells[i].second] = -1;
 
 
-	printPath(N);
-	std::cout << "Минимум " << minMoves << " ходов\n";
+
+    // Расстановка короля
+
+    field[kingPosition.first][kingPosition.second] = -2;
+
+
+
+    solve(startPosition.first, startPosition.second, field, moveCount,
+
+        isKingDefeated, kingPosition, startPosition, answerIsFinded);
+
 }
 
-void countQueensMoves(int i, int j, int& N, int& countMoves, int& minMoves, int numberOfNotPassedFields, std::vector<std::vector<int>>& board, int lastDirection)
+
+
+void solve(int i, int j, vector<vector<int>>& field, int& moveCount, bool& isKingDefeated,
+
+    pair<int, int> kingPosition, pair<int, int> startPosition, bool& answerIsFinded)
+
 {
-	if (numberOfNotPassedFields == 0)
-	{
-		if (countMoves < minMoves)
-		{
-			minMoves = countMoves;
-			if (N == 1) minMoves = 1;
-			minPath = path;
-		}
-	}
-	else
-	{
-		for (int k = 0; k < 8; ++k)
-		{
-			if (k != lastDirection && k != (lastDirection + 4) % 8)
-			{
-				int numberOfCompletedFieldsPerTurn = 0;
 
-				for (int w = 1; w < N; ++w)
-				{
-					int ni = i + w * di[k];
+    // Условие завершение поиска ответа, вывод поля с ходами в консоль
 
-					int nj = j + w * dj[k];
+    if (isKingDefeated && i == startPosition.first
 
-					if (ni >= 0 && ni < N && nj >= 0 && nj < N && board[ni][nj] == 0)
-					{
-						++numberOfCompletedFieldsPerTurn;
+        && j == startPosition.second && !answerIsFinded)
 
-						if (countMoves + 1 < minMoves && minMoves - countMoves - 1 < 2 * ((int)sqrt(numberOfNotPassedFields - numberOfCompletedFieldsPerTurn) + 1))
-						{
-							++countMoves;
+    {
 
-							move(i, j, ni, nj, board, k, countMoves);
+        showField(field);
 
-							countQueensMoves(ni, nj, N, countMoves, minMoves, numberOfNotPassedFields - numberOfCompletedFieldsPerTurn, board, k);
+        answerIsFinded = true;
 
-							cancelMove(i, j, ni, nj, board, k, countMoves);
+    }
 
-							--countMoves;
+    else if (!answerIsFinded)
 
-						}
-					}
-				}
-			}
-		}
-	}
+    {
+
+        // Проверка на то, повержен ли король
+
+        if (field[i][j] == -2)
+
+            isKingDefeated = true;
+
+
+
+        // Занятие клетки
+
+        field[i][j] = moveCount;
+
+        moveCount++;
+
+
+
+        // Проход по ходам коня
+
+        for (size_t q = 1; q <= MOVE_LIST.size(); q++)
+
+        {
+
+            // Проверка клектки на возможность хода
+
+            if (checkCell(i + MOVE_LIST[q].first, j + MOVE_LIST[q].second, field, isKingDefeated))
+
+            {
+
+                // Рекурсивный вызов
+
+                solve(i + MOVE_LIST[q].first, j + MOVE_LIST[q].second, field,
+
+                    moveCount, isKingDefeated, kingPosition, startPosition, answerIsFinded);
+
+            }
+
+        }
+
+
+
+        // Возрат
+
+        if (i == kingPosition.first && j == kingPosition.second)
+
+        {
+
+            isKingDefeated = false;
+
+            field[i][j] = -2;
+
+        }
+
+        else
+
+            field[i][j] = 0;
+
+        moveCount--;
+
+    }
+
 }
 
-void move(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, int direction, int moveNumber)
+
+
+// Функция проверки клетки на возможность хода
+
+bool checkCell(int i, int j, vector<vector<int>>& field, bool isKingDefeated)
+
 {
-	do
-	{
-		i += di[direction];
 
-		j += dj[direction];
+    return (i < N && i >= 0 && j < M && j >= 0 &&
 
-		if (board[i][j] == 0)
-		{
+        (field[i][j] == 0 || field[i][j] == -2 ||
 
-			board[i][j] = moveNumber;
+            (field[i][j] == 1 && isKingDefeated)));
 
-		}
-
-	} while (i != ni || j != nj);
-
-	path.push_back({ ni, nj });
 }
 
-void cancelMove(int i, int j, int ni, int nj, std::vector<std::vector<int>>& board, int direction, int moveNumber)
+
+
+// Вывод поля
+
+void showField(vector<vector<int>>& field)
+
 {
-	do
-	{
-		i += di[direction];
 
-		j += dj[direction];
+    for (size_t i = 0; i < N; i++)
 
-		if (board[i][j] == moveNumber)
-		{
+    {
 
-			board[i][j] = 0;
+        for (size_t j = 0; j < M; j++)
 
-		}
+        {
 
-	} while (i != ni || j != nj);
+            switch (field[i][j])
 
-	path.pop_back();
-}
+            {
 
-void printPath(int N)
-{
-	for (int i = 0; i < minPath.size(); i++) {
+            default:
 
-		std::cout << minPath[i][0] * N + minPath[i][1] << " ";
+                cout << field[i][j] << '\t';
 
-	}
+                break;
 
-	std::cout << "\n";
+            case 0:
+
+                cout << "*\t";
+
+                break;
+
+            case -1:
+
+                cout << "F\t";
+
+                break;
+
+            }
+
+        }
+
+        cout << '\n';
+
+    }
+
 }

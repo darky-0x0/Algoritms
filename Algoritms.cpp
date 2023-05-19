@@ -100,11 +100,31 @@ void SmallestNumberOfMoves(int& minMoves, int& countMoves, vector<int>& MainFiel
 void NextStep(vector<int>& mainField, int index);
 vector<int> Step(vector<int>& field, int startInd, int pos, int n);
 void PreviewStep(vector<int>& field, vector<int> oneStep);
+void KnightTraversingTheChessboard(int** field, int N, int M, vector<int> position, vector<int>& result);
+int countingSteps(int** field, int N, int M, vector<int> position);
+int getEmptyCells(int** field, int N, int M);
+void KnightTraversingTheChessboard(int** field, int N, int M, vector<int> position, int& result);
+void ArrangementOfMagaraja(vector<int>& field, vector<int>& vertical, vector<int>& diagonalUp, vector<int>& diagonalDown, vector<int>& knight, int& count, int size);
+void NextStepKnight(vector<int>& knight, int index, vector<int>& indexes);
+void PreviewStepKnight(vector<int> indexes, vector<int>& knight);
+
+vector<vector<int>> read_maze();
+void find_way(vector<vector<int>>& maze, int startx, int starty, int endx, int endy, vector<vector<int>>& result_maze, bool& flag, int& turn);
+void set_points(vector<vector<int>>& maze, int& startx, int& starty, int& endx, int& endy);
+void set(int& n, vector<int>& v, vector<int>& w, int& W);
+void find_max_cost(int types, int cur_weight, int cur_cost, vector<int>& weight, vector<int>& price, int MAXWEIGHT, vector<int>& backpack, vector<int>& backpack_result);
+int backpack_cost(vector<int>& backpack, vector<int>& price);
+void print(vector<int> backpack);
+void set_table();
 
 #pragma endregion
 
 
 
+
+const int rateKnight[8][2] = { {-2, 1},{-1, 2},{1, 2},{2, 1},{2, -1},{1, -2},{-1, -2},{-2, -1} };
+
+const int rateMaze[4][2] = { {-1,0},{0, 1},{1, 0},{0, -1} };
 
 
 
@@ -711,6 +731,7 @@ void task9() {
 
 	CompactArrangementOfQueens(MainField, queensField, n, fields, result);
 
+	cout << fields << "\n";
 	
 
 	vector<int> printArray(n * n, 0);
@@ -832,9 +853,166 @@ void task11() {
 
 void task12() {
 
+	cout << "Выберите подзадачу: \n1) Найти один способ обхода конем доски N×M. Конь должен побывать на каждой клетке доски только один раз. Начальная позиция коня определяется случайным образом. Использовать правило Варнсдорфа. \n2) Для каждого начального расположения коня найти количество способов обхода доски.\n";
+
+	int taskNum; cin >> taskNum;
+
+	system("cls");
+
+	cout << "Введите размерность шахматного поля N x M: \n";
+
+	int N, M; cin >> N >> M;
+
+	system("cls");
+
+	int** field = new int*[N + 4];
+
+	for (int i = 0; i < N + 4; i++) {
+
+		field[i] = new int[M + 4];
+		
+		for (int j = 0; j < M + 4; j++) {
+
+			if ((i < 2) || (i >= N + 2)) {
+
+				field[i][j] = -1;
+
+			}
+			else {
+
+				if (j < 2 || (j >= M + 2)) {
+
+					field[i][j] = -1;
+
+				}
+				else {
+				
+					field[i][j] = 0;
+				
+				}
+			}
+		}
+
+	}
+
+
+	if (taskNum == 1) {
+
+		srand((unsigned int)time(NULL));
+
+		int ri = rand() % N + 2;
+		
+		int rj = rand() % M + 2;
+
+		vector<int> position = {ri, rj};
+
+		cout << "Индекс коня: " << ri-2 << " " << rj-2 << "\n\n";
+
+		vector<int> result;
+
+		result.push_back(position[0]);
+		result.push_back(position[1]);
+
+		field[ri][rj] = 1;
+
+		KnightTraversingTheChessboard(field, N, M, position, result);
+
+		for (int i = 2; i < N + 2; i++) {
+
+			for (int j = 2; j < M + 2; j++) {
+
+				cout << field[i][j] << " ";
+
+			}
+
+			cout << "\n";
+
+		}
+
+	}
+	else {
+
+		vector<int> tempResult;
+
+		vector<vector<int>> tempResult2;
+
+		for (int i = 2; i <= ((N + 2)+1)/2; i++) {
+
+			for (int j = 2; j <= ((M + 2)+1)/2; j++) {
+
+				int result(0);
+
+				vector<int> position = { i, j };
+
+				field[i][j] = 1;
+
+				KnightTraversingTheChessboard(field, N, M, position, result);
+
+				field[i][j] = 0;
+
+				tempResult.push_back(result);
+
+				cout << result << " ";
+
+			}
+
+			for (int i = M / 2 - 1; i >= 0; i--) {
+
+				tempResult.push_back(tempResult[i]); 
+
+				cout << tempResult[i] << " ";
+
+			}
+
+			tempResult2.push_back(tempResult);
+
+			tempResult.clear();
+
+			cout << "\n";
+
+		}
+
+
+		for (int i = N / 2 - 1; i >= 0; i--) {
+				
+			tempResult = tempResult2[i];
+
+			for (int j = 0; j < M; j++) {
+
+				cout << tempResult[j] << " ";
+
+			}
+
+			cout << "\n";
+
+		}
+
+	}
+
 }
 
 void task13() {
+
+
+	int N = 10;
+
+
+
+	int count(0);
+
+	vector<int> field(N * N, 0);
+
+	vector<int> vertical(N * N, 0);
+
+	vector<int> diagonalUp(N * N, 0);
+
+	vector<int> diagonalDown(N * N, 0);
+
+	vector<int> knight(N * N, 0);
+
+
+
+	ArrangementOfMagaraja(field, vertical, diagonalUp, diagonalDown, knight, count, N);
 
 }
 
@@ -842,22 +1020,81 @@ void task14() {
 
 }
 
+
+
 //ЛАБА 5
+
 void task15() {
+
+	//vector<vector<int>> maze = read_maze();
+
+	//bool flag = false;
+
+	//int turn = 1;
+
+	//vector<vector<int>> result = maze;
+
+	//int startx, starty, endx, endy;
+
+	//set_points(maze, startx, starty, endx, endy);
+
+	//maze[startx][starty] = 0;
+	//maze[endx][endy] = 0;
+	//result[endx][endy] = 0;
+
+	//find_way(maze, startx, starty, endx, endy, result, flag, turn);
+
+	//for (int i = 0; i < result.size(); ++i) {
+
+	//	for (int j = 0; j < result[0].size(); ++j) {
+
+	//		cout << result[i][j] << ' ';
+
+	//	}
+
+	//	cout << endl;
+
+	//}
 
 }
 
 void task16() {
 
+	/*int types;
+	vector<int> price;
+	vector<int> weight;
+	int MAXWEIGHT;
+
+	set(types, price, weight, MAXWEIGHT);
+
+	vector<int> backpack(types, 0);
+	vector<int> backpack_result(types, 0);
+
+	find_max_cost(types, 0, 0, weight, price, MAXWEIGHT, backpack, backpack_result);
+
+	cout << backpack_cost(backpack_result, price);*/
+
 }
 
 void task17() {
+
+	/*set_table();
+
+	vector<int> way;
+
+	way.push_back(START);
+
+	vector<bool> destination(N - 1, true);
+
+	find_way(START, destination);*/
 
 }
 
 void task18() {
 
 }
+
+
 
 //ЛАБА 6
 void task19() {
@@ -916,7 +1153,7 @@ void task31() {
 //ТЕСТЫ
 void task32() {
 
-	walker();
+	task366();
 
 }
 
@@ -1550,12 +1787,6 @@ vector<int> simpleExchange(vector<int> array, int size, unsigned long int& compa
 		}
 		comparisionWithNotElement++;
 
-		if (l % 1000 == 0) {
-
-			cout << counter++ << "%\n";
-
-		}
-
 	}
 	comparisionWithNotElement++;
 
@@ -1604,12 +1835,6 @@ vector<int> simpleExchangeUpgrade(vector<int> array, int size, unsigned long int
 
 		indexReplace = lastReplace;
 
-
-		if (count % 1000 == 0) {
-
-			cout << counter++ << "%\n";
-
-		}
 
 	}
 	comparisionWithNotElement++;
@@ -1702,12 +1927,6 @@ vector<int> simpleExchangeShaker(vector<int> array, int size, unsigned long int&
 		}
 
 
-
-		if (count % 1000 == 0) {
-
-			cout << counter++ << "%\n";
-
-		}
 
 	}
 
@@ -2294,6 +2513,7 @@ int GetEmpty(vector<int> mainField) {
 
 
 
+
 //Задача №3
 
 void SmallestNumberOfMoves(int& minMoves, int& countMoves, vector<int>& MainField, vector<int>& queensIndexes, vector<int>& result, int size, int currentDirection, int pos, int n) {
@@ -2585,9 +2805,6 @@ void PreviewStep(vector<int>& field, vector<int> oneStep) {
 
 
 
-
-
-
 //Задача №4
 
 void AttackOfQueens(const int p, const int n, vector<int>& MainField, vector<int>& queensField, vector<int>& result, int& QueensCount, int thisStep, int size, int count) {
@@ -2696,6 +2913,254 @@ void PreviewStep(vector<int>& field, vector<int>& queensField, int index, int si
 
 
 
+//Задача №5
+
+void KnightTraversingTheChessboard(int** field, int N, int M, vector<int> position, vector<int>& result) {
+
+	if (getEmptyCells(field, N, M) == 0) {
+
+		int ind(0);
+
+		cout << "\nПуть коня: ";
+
+		for (int i = 0; i < result.size()/2; i++) { //вывод пути
+
+			cout << "(" << result[ind++] - 2 << ";";
+			cout << result[ind++]-2 << ") ";
+
+		}
+
+	}
+	else {
+		
+		field[position[0]][position[1]] = 1; //отмечаем на поле
+
+		vector<int> counter;
+
+		for (int i = 0; i < 8; i++) {
+
+			vector<int> newPosition = { position[0] + rateKnight[i][0], position[1] + rateKnight[i][1] };
+
+			if (field[newPosition[0]][newPosition[1]] == 0) {
+
+				counter.push_back(countingSteps(field, N, M, newPosition)); //cохраняем массив с количеством ходов
+
+			}
+
+			else counter.push_back(9); //запоняем бессмысленные поля;
+
+		}
+
+		int minSteps = *min_element(counter.begin(), counter.end()); //находим минимальный элемент вектора
+
+		int minStepsIndex;
+
+		int tempCounter(0); //для подсчёта, остлись ли пути
+
+		for (int i = 0; i < 8; i++) if (counter[i] == minSteps) {
+
+			minStepsIndex = i;
+
+			tempCounter++;
+
+		}
+
+		if (tempCounter == 8 && counter[0] == 9) {
+
+			cout << "Обход всего поля с данной позиции и поля данной размерности и данным способом невозможен";
+
+		}
+		else {
+
+			position = { position[0] + rateKnight[minStepsIndex][0], position[1] + rateKnight[minStepsIndex][1] }; //запоминаем шаг
+
+			field[position[0]][position[1]] = 1;
+
+			result.push_back(position[0]);
+			result.push_back(position[1]);
+
+			KnightTraversingTheChessboard(field, N, M, position, result);
+
+		}
+
+	}
+
+}
+
+int countingSteps(int** field, int N, int M, vector<int> position)
+{
+	int counter(0);
+
+	for (int i = 0; i < 8; i++) {
+		
+		vector<int> newPosition = { position[0] + rateKnight[i][0], position[1] + rateKnight[i][1] };
+
+		if (field[newPosition[0]][newPosition[1]] == 0) counter++;
+
+	}
+
+	return counter;
+
+}
+
+int getEmptyCells(int** field, int N, int M) {
+
+	int counter(0);
+
+	for (int i = 0; i < N+4; i++) {
+
+		for (int j = 0; j < M+4; j++) {
+
+			if (field[i][j] == 0) counter++;
+
+		}
+
+	}
+
+	return counter;
+
+}
+
+void KnightTraversingTheChessboard(int** field, int N, int M, vector<int> position, int& result) {
+
+	if (getEmptyCells(field, N, M) == 0) {
+
+		result++;
+
+	}
+	else {
+
+		field[position[0]][position[1]] = 1; //отмечаем на поле
+
+		vector<int> counter;
+
+		for (int i = 0; i < 8; i++) {
+
+			vector<int> newPosition = { position[0] + rateKnight[i][0], position[1] + rateKnight[i][1] };
+
+
+			if (field[newPosition[0]][newPosition[1]] == 0) {
+			
+				field[newPosition[0]][newPosition[1]] = 1;
+
+				KnightTraversingTheChessboard(field, N, M, newPosition, result);
+
+				field[newPosition[0]][newPosition[1]] = 0;
+			
+			}
+
+
+		}
+
+	}
+
+}
+
+
+
+//Задача №6
+
+void ArrangementOfMagaraja(vector<int>& field, vector<int>& vertical, vector<int>& diagonalUp, vector<int>& diagonalDown, vector<int>& knight, int& count, int size) {
+
+
+	if (count == size) { //если количество собранных строк равно размерности
+
+		int k(0);
+
+		for (int i = 0; i < 10; i++) {
+
+			for (int j = 0; j < 10; j++) {
+
+				cout << field[k++] << " ";
+
+			}
+
+			cout << "\n";
+
+		}
+
+		cout << "\n\n";
+
+	}
+	else {
+
+		vector<int> step(size, 0); //текущий ряд
+
+		for (int i = 0; i < size; i++) {
+
+			if (vertical[count * size + i] >= 1 || diagonalDown[count * size + i] >= 1 || diagonalUp[count * size + i] >= 1 || knight[count*size+i] >= 1) step[i] = 1;
+
+		}
+
+		int j(0);
+
+		for (int i = count * size; i < (count + 1) * size; i++) {
+
+			if (step[j++] == 0) {
+
+				vector<int> indexes;
+
+				NextStep(field, vertical, diagonalUp, diagonalDown, count, size, i);
+
+				NextStepKnight(knight, i, indexes);
+
+				ArrangementOfMagaraja(field, vertical, diagonalUp, diagonalDown, knight, count, size);
+
+				PreviewStep(field, vertical, diagonalUp, diagonalDown, count, size, i);
+
+				PreviewStepKnight(indexes, knight);
+
+			}
+
+		}
+
+	}
+
+}
+
+void NextStepKnight(vector<int>& knight, int index, vector<int>& indexes) {
+
+	for (int i = 0; i < 8; i++) {
+
+		if ((index < 10) && ((i == 0) || (i == 1) || (i == 6) || (i == 7))) continue;
+		
+		if ((index < 20) && ((i == 0) || (i == 7))) continue;
+
+		if ((index > 89) && ((i == 3) || (i == 4))) continue;
+
+		if ((index > 79) && ((i == 2) || (i == 3) || (i == 4) || (i == 5))) continue;
+
+		if ((index % 10 == 0) && ((i == 4) || (i == 5) || (i == 6) || (i == 7))) continue;
+
+		if ((index % 10 == 1) && ((i == 5) || (i == 6))) continue;
+
+		if ((index % 10 == 9) && ((i == 0) || (i == 1) || (i == 2) || (i == 3))) continue;
+
+		if ((index % 10 == 8) && ((i == 1) || (i == 2))) continue;
+
+		int newIndex = index + (rateKnight[i][0] * 10) + rateKnight[i][1];
+
+		if ((newIndex >= 0) && (newIndex < 100)) {
+
+
+
+			knight[newIndex]++;
+
+			indexes.push_back(newIndex);
+
+		}
+
+	}
+}
+
+void PreviewStepKnight(vector<int> indexes, vector<int>& knight) {
+
+	for (int i = 0; i < indexes.size(); i++) {
+		knight[indexes[i]]--;
+	}
+
+}
+
 
 #pragma endregion 
 
@@ -2704,14 +3169,240 @@ void PreviewStep(vector<int>& field, vector<int>& queensField, int index, int si
 
 
 
-
+/*
 
 #pragma region lab5
+
+//Задача №1
+
+vector<vector<int>> read_maze() {
+
+	string filename = "maze.txt";
+
+	vector<vector<int>>result;
+
+	ifstream fin(filename);
+
+	int n, m;
+
+	fin >> n >> m;
+
+	int num;
+
+	for (int i = 0; i < n; ++i) {
+
+		result.push_back(vector<int>(m, 0));
+
+		for (int j = 0; j < m; ++j) {
+
+			fin >> num;
+
+			result[i][j] = num;
+
+		}
+
+	}
+
+	fin.close();
+
+	return result;
+}
+
+void find_way(vector<vector<int>>& maze, int startx, int starty, int endx, int endy, vector<vector<int>>& result_maze, bool& flag, int& turn) {
+
+	if (startx == endx && starty == endy) {
+
+		maze[startx][starty] = turn;
+
+		result_maze = maze;
+
+		flag = true;
+
+	}
+	else {
+
+		maze[startx][starty] = turn;
+
+		if (maze[startx][starty] >= result_maze[endx][endy] && flag) {
+
+			maze[startx][starty] = 0;
+
+			return;
+
+		}
+
+		for (int k = 0; k < 4; ++k) {
+
+			if (maze[startx + rateMaze[k][0]][starty + rateMaze[k][1]] == 0 || maze[startx + rateMaze[k][0]][starty + rateMaze[k][1]] == result_maze[endx][endy]) {
+
+				turn++;
+
+				find_way(maze, startx + rateMaze[k][0], starty + rateMaze[k][1], endx, endy, result_maze);
+
+				turn--;
+
+				maze[startx + rateMaze[k][0]][starty + rateMaze[k][1]] = 0;
+			}
+
+		}
+
+	}
+
+}
+
+void set_points(vector<vector<int>>& maze, int& startx, int& starty, int& endx, int& endy) {
+
+	for (int i = 0; i < maze.size(); ++i) {
+
+		for (int j = 0; j < maze[0].size(); ++j) {
+
+			if (maze[i][j] == -2) {
+
+				startx = i;
+				starty = j;
+
+			}
+
+			if (maze[i][j] == -3) {
+
+				endx = i;
+				endy = j;
+
+			}
+
+		}
+
+	}
+
+}
+
+
+
+
+//Задача №2
+
+void set(int& n, vector<int>& v, vector<int>& w, int& W) {
+
+	string filename = "backpack.txt";
+
+	ifstream fin(filename);
+
+	fin >> n;
+
+	int num;
+
+	for (int i = 0; i < n; ++i) {
+
+		fin >> num;
+		w.push_back(num);
+
+		fin >> num;
+		v.push_back(num);
+
+	}
+
+	fin >> W;
+
+	fin.close();
+}
+
+void find_max_cost(int types, int cur_weight, int cur_cost, vector<int>& weight, vector<int>& price, int MAXWEIGHT, vector<int>& backpack, vector<int>& backpack_result) {
+
+
+	if (backpack_cost(backpack, price) > backpack_cost(backpack_result, price)) {
+
+		backpack_result = backpack;
+
+	}
+
+	for (int i = 0; i < types; ++i) {
+
+		if (cur_weight + weight[i] <= MAXWEIGHT) {
+
+			backpack[i]++;
+
+			cur_cost += price[i];
+
+			cur_weight += weight[i];
+
+
+
+			find_max_cost(types, cur_weight, cur_cost, weight, price, MAXWEIGHT, backpack, backpack_result);
+
+			backpack[i]--;
+
+			cur_cost -= price[i];
+
+			cur_weight -= weight[i];
+
+		}
+
+	}
+
+}
+
+int backpack_cost(vector<int>& backpack, vector<int>& price) {
+
+	int result = 0;
+
+	for (int i = 0; i < backpack.size(); ++i) {
+
+		result += backpack[i] * price[i];
+
+	}
+
+	return result;
+}
+
+void print(vector<int> backpack) {
+
+	for (int i = 0; i < backpack.size(); ++i) {
+
+		cout << backpack[i];
+		cout << endl;
+	}
+
+}
+
+
+
+
+//Задача №3
+
+void set_table() {
+
+	string filename = "places.txt";
+
+	ifstream fin(filename);
+
+	fin >> N;
+
+	int num;
+
+	for (int i = 0; i < N; ++i) {
+
+		TABLE.push_back(vector<int>());
+
+		for (int j = 0; j < N - 1; ++j) {
+
+			fin >> num;
+
+			TABLE[i].push_back(num);
+
+		}
+
+	}
+
+	fin.close();
+
+	cout << "Index of first place: "; cin >> START;
+}
+
 
 #pragma endregion
 
 
-
+*/
 
 
 
