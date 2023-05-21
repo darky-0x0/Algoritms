@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Algoritms.cpp" />
     <ClCompile Include="ArrangementOfQueens.cpp" />
+    <ClCompile Include="CompactArrangementOfQueens.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="SearchInATDArray.cpp" />
     <ClCompile Include="SearchNumbersAlgorithms.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrangementOfQueens.h" />
+    <ClInclude Include="CompactArrangementOfQueens.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="SearchInATDArray.h" />
     <ClInclude Include="SearchNumbersAlgorithms.h" />
