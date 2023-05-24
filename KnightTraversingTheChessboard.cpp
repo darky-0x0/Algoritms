@@ -126,6 +126,7 @@ void lab4task5() {
 
 		}
 
+		cout << "\n\n";
 
 		for (int i = N / 2 - 1; i >= 0; i--) {
 
@@ -160,6 +161,8 @@ void KnightTraversingTheChessboard(int** field, int N, int M, vector<int> positi
 			cout << result[ind++] - 2 << ") ";
 
 		}
+
+		cout << "\n\n";
 
 	}
 	else {
@@ -198,7 +201,7 @@ void KnightTraversingTheChessboard(int** field, int N, int M, vector<int> positi
 
 		if (tempCounter == 8 && counter[0] == 9) {
 
-			cout << "Обход всего поля с данной позиции и поля данной размерности и данным способом невозможен";
+			cout << "Обход всего поля с данной позиции и поля данной размерности и данным способом невозможен\n";
 
 		}
 		else {

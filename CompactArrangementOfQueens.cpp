@@ -58,7 +58,7 @@ void CompactArrangementOfQueens(vector<int>& mainField, vector<int>& queensField
 
 	if (n == 0) {
 
-		fields = GetEmpty(mainField);
+		fields = GetEmpty1(mainField);
 
 		result = queensField;
 
@@ -82,7 +82,7 @@ void CompactArrangementOfQueens(vector<int>& mainField, vector<int>& queensField
 
 			NextStep(mainField, queensField, i);
 
-			if (GetEmpty(mainField) <= fields) {
+			if (GetEmpty1(mainField) <= fields) {
 
 				PreviewStep(mainField, queensField, i);
 
@@ -201,7 +201,7 @@ void PreviewStep(vector<int>& MainField, vector<int>& queensField, int pos) {
 
 }
 
-int GetEmpty(vector<int> mainField) {
+int GetEmpty1(vector<int> mainField) {
 
 	int count = 0;
 

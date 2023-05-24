@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 
@@ -29,51 +30,51 @@ void createFilesForSort();
 /// <summary>
 /// Сортировка чётные-нечётные
 /// </summary>
-vector<int> sortingByParity(vector<int> array, int size);
+vector<int> sortingByParity(vector<int>, int);
 
 /// <summary>
 /// Сортировка "по индексам"
 /// </summary>
-vector<int> simpleSort(vector<int> array, int size, int m);
+vector<int> simpleSort(vector<int>, int, int);
 
 
 /// <summary>
 /// Алгоритм сортировки простым выбором
 /// </summary>
-vector<int> simpleSelect(vector<int> array, int size, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+vector<int> simpleSelect(vector<int>, int, unsigned long int&, unsigned long int&, unsigned long int&);
 
 /// <summary>
 /// Алгоритм сортировки "пузырьком"
 /// </summary>
-vector<int> simpleExchange(vector<int> array, int size, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+vector<int> simpleExchange(vector<int>, int, unsigned long int&, unsigned long int&, unsigned long int&);
 
 /// <summary>
 /// Алгоритм сортировки "пузырьком" (учёт последнего обмена)
 /// </summary>
-vector<int> simpleExchangeUpgrade(vector<int> array, int size, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+vector<int> simpleExchangeUpgrade(vector<int>, int, unsigned long int&, unsigned long int&, unsigned long int&);
 
 /// <summary>
 /// Алгоритм сортировки "пузырьком" ("шейкер-сортировка")
 /// </summary>
-vector<int> simpleExchangeShaker(vector<int> array, int size, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+vector<int> simpleExchangeShaker(vector<int>, int, unsigned long int&, unsigned long int&, unsigned long int&);
 
 /// <summary>
 /// Алгоритм прямого включения
 /// </summary>
-vector<int> insertionSort(vector<int> array, int size, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+vector<int> insertionSort(vector<int>, int, unsigned long int&, unsigned long int&, unsigned long int&);
 
 /// <summary>
 /// Алгоритм прямого включения (баррьерный элемент)
 /// </summary>
-vector<int> insertionSortWithBarrier(vector<int> arrayA, int size, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+vector<int> insertionSortWithBarrier(vector<int>, int, unsigned long int&, unsigned long int&, unsigned long int&);
 
 /// <summary>
 /// Алгоритм сортировки слиянием
 /// </summary>
-vector<int> mergeSort(vector<int> array, int size, int& count, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+vector<int> mergeSort(vector<int>, int, int&, unsigned long int&, unsigned long int&, unsigned long int&);
 
 /// <summary>
 /// Быстрая сортировка Хоара
 /// </summary>
-void sortHoar(vector<int>& array, int first, int last, int& count, unsigned long int& comparisonWithElement, unsigned long int& comparisionWithNotElement, unsigned long int& countReplace);
+void sortHoar(vector<int>&, int, int, int&, unsigned long int&, unsigned long int&, unsigned long int&);
 

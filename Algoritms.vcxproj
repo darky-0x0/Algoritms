@@ -128,24 +128,44 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algoritms.cpp" />
+    <ClCompile Include="ArrangementOfMagaraja.cpp" />
     <ClCompile Include="ArrangementOfQueens.cpp" />
+    <ClCompile Include="AttackOfQueens.cpp" />
+    <ClCompile Include="Backpack.cpp" />
     <ClCompile Include="CompactArrangementOfQueens.cpp" />
+    <ClCompile Include="Conditions.cpp" />
+    <ClCompile Include="KnightAttila.cpp" />
+    <ClCompile Include="KnightTraversingTheChessboard.cpp" />
+    <ClCompile Include="Maze.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="SearchInATDArray.cpp" />
     <ClCompile Include="SearchNumbersAlgorithms.cpp" />
     <ClCompile Include="SearchStringsAlgorithms.cpp" />
+    <ClCompile Include="SmallestNumberOfMoves.cpp" />
     <ClCompile Include="Sorting.cpp" />
+    <ClCompile Include="Sudoku.cpp" />
     <ClCompile Include="Temp.cpp" />
+    <ClCompile Include="TravelingSalesman.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrangementOfMagaraja.h" />
     <ClInclude Include="ArrangementOfQueens.h" />
+    <ClInclude Include="AttackOfQueens.h" />
+    <ClInclude Include="Backpack.h" />
     <ClInclude Include="CompactArrangementOfQueens.h" />
+    <ClInclude Include="Conditions.h" />
+    <ClInclude Include="KnightAtilla.h" />
+    <ClInclude Include="KnightTraversingTheChessboard.h" />
+    <ClInclude Include="Maze.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="SearchInATDArray.h" />
     <ClInclude Include="SearchNumbersAlgorithms.h" />
     <ClInclude Include="SearchStringsAlgorithms.h" />
+    <ClInclude Include="SmallestNumberOfMoves.h" />
     <ClInclude Include="Sorting.h" />
+    <ClInclude Include="Sudoku.h" />
     <ClInclude Include="Temp.h" />
+    <ClInclude Include="TravelingSalesman.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

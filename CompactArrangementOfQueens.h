@@ -14,19 +14,19 @@ void lab4task2();
 /// <summary>
 /// Следующий шаг (Задача о расстановке N ферзей и не битых клетках)
 /// </summary>
-void NextStep(vector<int>& field, vector<int>& queensField, int index, int size, int n);
+void NextStep(vector<int>&, vector<int>&, int);
 
 /// <summary>
 /// Откат шага (Задача о расстановке N ферзей и не битых клетках)
 /// </summary>
-void PreviewStep(vector<int>& field, vector<int>& queensField, int index, int size, int n);
+void PreviewStep(vector<int>&, vector<int>&, int);
 
 /// <summary>
 /// Задача о расстановке N ферзей и не битых клетках
 /// </summary>
-void CompactArrangementOfQueens(vector<int>& mainField, vector<int>& queensField, int n, int& fields, vector<int>& result);
+void CompactArrangementOfQueens(vector<int>&, vector<int>&, int n, int&, vector<int>&);
 
 /// <summary>
 /// Получение пустых клеток
 /// </summary>
-int GetEmpty(vector<int> mainField);
+int GetEmpty1(vector<int>);

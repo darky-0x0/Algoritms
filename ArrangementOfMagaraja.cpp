@@ -69,13 +69,13 @@ void ArrangementOfMagaraja(vector<int>& field, vector<int>& vertical, vector<int
 
 				vector<int> indexes;
 
-				NextStep(field, vertical, diagonalUp, diagonalDown, count, size, i);
+				NextStep1(field, vertical, diagonalUp, diagonalDown, count, size, i);
 
 				NextStepKnight(knight, i, indexes);
 
 				ArrangementOfMagaraja(field, vertical, diagonalUp, diagonalDown, knight, count, size);
 
-				PreviewStep(field, vertical, diagonalUp, diagonalDown, count, size, i);
+				PreviewStep1(field, vertical, diagonalUp, diagonalDown, count, size, i);
 
 				PreviewStepKnight(indexes, knight);
 
@@ -130,7 +130,7 @@ void PreviewStepKnight(vector<int> indexes, vector<int>& knight) {
 
 }
 
-void NextStep(vector<int>& field, vector<int>& vertical, vector<int>& diagonalUp, vector<int>& diagonalDown, int& count, int size, int index)
+void NextStep1(vector<int>& field, vector<int>& vertical, vector<int>& diagonalUp, vector<int>& diagonalDown, int& count, int size, int index)
 
 {
 
@@ -174,7 +174,7 @@ void NextStep(vector<int>& field, vector<int>& vertical, vector<int>& diagonalUp
 
 }
 
-void PreviewStep(vector<int>& field, vector<int>& vertical, vector<int>& diagonalUp, vector<int>& diagonalDown, int& count, int size, int index)
+void PreviewStep1(vector<int>& field, vector<int>& vertical, vector<int>& diagonalUp, vector<int>& diagonalDown, int& count, int size, int index)
 
 {
 
