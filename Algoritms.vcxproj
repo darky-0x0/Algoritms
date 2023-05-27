@@ -132,12 +132,15 @@
     <ClCompile Include="ArrangementOfQueens.cpp" />
     <ClCompile Include="AttackOfQueens.cpp" />
     <ClCompile Include="Backpack.cpp" />
+    <ClCompile Include="ClassicTriangle.cpp" />
     <ClCompile Include="CompactArrangementOfQueens.cpp" />
     <ClCompile Include="Conditions.cpp" />
+    <ClCompile Include="DegreeOfNumber.cpp" />
     <ClCompile Include="KnightAttila.cpp" />
     <ClCompile Include="KnightTraversingTheChessboard.cpp" />
     <ClCompile Include="Maze.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="N_Polygons.cpp" />
     <ClCompile Include="SearchInATDArray.cpp" />
     <ClCompile Include="SearchNumbersAlgorithms.cpp" />
     <ClCompile Include="SearchStringsAlgorithms.cpp" />
@@ -146,18 +149,22 @@
     <ClCompile Include="Sudoku.cpp" />
     <ClCompile Include="Temp.cpp" />
     <ClCompile Include="TravelingSalesman.cpp" />
+    <ClCompile Include="TurtleCity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrangementOfMagaraja.h" />
     <ClInclude Include="ArrangementOfQueens.h" />
     <ClInclude Include="AttackOfQueens.h" />
     <ClInclude Include="Backpack.h" />
+    <ClInclude Include="ClassicTriangle.h" />
     <ClInclude Include="CompactArrangementOfQueens.h" />
     <ClInclude Include="Conditions.h" />
+    <ClInclude Include="DegreeOfNumber.h" />
     <ClInclude Include="KnightAtilla.h" />
     <ClInclude Include="KnightTraversingTheChessboard.h" />
     <ClInclude Include="Maze.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="N_Polygons.h" />
     <ClInclude Include="SearchInATDArray.h" />
     <ClInclude Include="SearchNumbersAlgorithms.h" />
     <ClInclude Include="SearchStringsAlgorithms.h" />
@@ -166,6 +173,7 @@
     <ClInclude Include="Sudoku.h" />
     <ClInclude Include="Temp.h" />
     <ClInclude Include="TravelingSalesman.h" />
+    <ClInclude Include="TurtleCity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

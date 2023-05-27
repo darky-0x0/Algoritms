@@ -248,29 +248,29 @@ bool menu(int lab, int key, bool rev)
 
 		switch (key) {
 
-		/*case 1: system("cls");
+		case 1: system("cls");
 
 			lab6task1();
 
-			break;*/
+			break;
 
-		/*case 2: system("cls");
+		case 2: system("cls");
 
 			lab6task2();
 
-			break;*/
+			break;
 
-		/*case 3: system("cls");
+		case 3: system("cls");
 
 			lab6task3();
 
-			break;*/
+			break;
 
-		/*case 4: system("cls");
+		case 4: system("cls");
 
 			lab6task4();
 
-			break;*/
+			break;
 
 		/*case 5: system("cls");
 
@@ -341,7 +341,13 @@ bool menu(int lab, int key, bool rev)
 			lab7task7();
 		
 			break;*/
-		
+
+		case 8: system("cls");
+	
+			task666();
+	
+			break;
+
 
 		case 0: rev = false;
 
@@ -354,12 +360,6 @@ bool menu(int lab, int key, bool rev)
 		}
 
 		break;
-
-	/*case 8: system("cls");
-	
-		TEMPTASK();
-	
-		break;*/
 
 	default:
 

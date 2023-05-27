@@ -4,4 +4,4 @@
 #include <fstream>
 #include <vector>
 
-void task366();
+void task666();

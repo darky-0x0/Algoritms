@@ -14,6 +14,10 @@
 #include "Backpack.h"
 #include "TravelingSalesman.h"
 #include "Sudoku.h"
+#include "TurtleCity.h"
+#include "ClassicTriangle.h"
+#include "DegreeOfNumber.h"
+#include "N_Polygons.h"
 #include "Temp.h"
 #include <iostream>
 using namespace std;

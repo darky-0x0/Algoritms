@@ -1,224 +1,47 @@
 #include <iostream>
 #include <vector>
-#include <map>
+#include <string>
 
-using namespace std;
-
-const int M = 6;
-const int N = 6;
-
-// Варианты ходов коня
-map<int, pair<int, int>> MOVE_LIST = {
-        {1, pair<int, int>(-2, 1)},
-        {2, pair<int, int>(-1, 2)},
-        {3, pair<int, int>(1, 2)},
-        {4, pair<int, int>(2, 1)},
-        {5, pair<int, int>(2, -1)},
-        {6, pair<int, int>(1, -2)},
-        {7, pair<int, int>(-1, -2)},
-        {8, pair<int, int>(-2, -1)}
+struct Result {
+    int count;       // Количество операций
+    std::string expression;  // Выражение
 };
 
-const int rateKnight[8][2] = { {-2, 1},{-1, 2},{1, 2},{2, 1},{2, -1},{1, -2},{-1, -2},{-2, -1} };
+Result calculateMinimumOperations(int N, int k) {
+    std::vector<Result> Op(N + 1);  // Массив для хранения результатов
 
-void solve(int i, int j, vector<vector<int>>& field, int& moveCount, bool& isKingDefeated,
-    pair<int, int> kingPosition, pair<int, int> startPosition, bool& answerIsFinded);
-bool checkCell(int i, int j, vector<vector<int>>& field, bool isKingDefeated);
-void showField(vector<vector<int>>& field);
+    // Базовый случай: Op[1] = 0, так как нет операций для вычисления k^1
+    Op[1].count = 0;
+    Op[1].expression = "k";
 
-void task366()
-{
+    for (int i = 2; i <= N; i++) {
+        Op[i].count = Op[i - 1].count + 1;
+        Op[i].expression = "(" + Op[i - 1].expression + ")^k";
 
-    pair<int, int> startPosition(3, 5);
+        for (int j = 2; j <= i - 1; j++) {
+            if (i % j == 0) {
+                int count = Op[i / j].count + j - 1;
+                std::string expression = "(" + Op[i / j].expression + ")^" + std::to_string(j);
 
-    pair<int, int> kingPosition(4, 1);
-
-    vector<pair<int, int>> burningCells;
-
-    vector<vector<int>> field(N);
-
-    for (int i = 0; i < field.size(); i++) {
-
-        field[i] = vector<int>(M, 0);
-
-    }
-
-    int moveCount = 1;
-
-    bool isKingDefeated = false;
-
-    bool answerIsFinded = false;
-
-
-
-    // Добавление на поле горящих клеток
-
-    for (size_t i = 0; i < burningCells.size(); i++)
-
-        field[burningCells[i].first][burningCells[i].second] = -1;
-
-
-
-    // Расстановка короля
-
-    field[kingPosition.first][kingPosition.second] = -2;
-
-
-
-    solve(startPosition.first, startPosition.second, field, moveCount,
-
-        isKingDefeated, kingPosition, startPosition, answerIsFinded);
-
-}
-
-
-
-void solve(int i, int j, vector<vector<int>>& field, int& moveCount, bool& isKingDefeated,
-
-    pair<int, int> kingPosition, pair<int, int> startPosition, bool& answerIsFinded)
-
-{
-
-    // Условие завершение поиска ответа, вывод поля с ходами в консоль
-
-    if (isKingDefeated && i == startPosition.first
-
-        && j == startPosition.second && !answerIsFinded)
-
-    {
-
-        showField(field);
-
-        answerIsFinded = true;
-
-    }
-
-    else if (!answerIsFinded)
-
-    {
-
-        // Проверка на то, повержен ли король
-
-        if (field[i][j] == -2)
-
-            isKingDefeated = true;
-
-
-
-        // Занятие клетки
-
-        field[i][j] = moveCount;
-
-        moveCount++;
-
-
-
-        // Проход по ходам коня
-
-        for (size_t q = 1; q <= MOVE_LIST.size(); q++)
-
-        {
-
-            // Проверка клектки на возможность хода
-
-            if (checkCell(i + MOVE_LIST[q].first, j + MOVE_LIST[q].second, field, isKingDefeated))
-
-            {
-
-                // Рекурсивный вызов
-
-                solve(i + MOVE_LIST[q].first, j + MOVE_LIST[q].second, field,
-
-                    moveCount, isKingDefeated, kingPosition, startPosition, answerIsFinded);
-
+                if (count < Op[i].count) {
+                    Op[i].count = count;
+                    Op[i].expression = expression;
+                }
             }
-
         }
-
-
-
-        // Возрат
-
-        if (i == kingPosition.first && j == kingPosition.second)
-
-        {
-
-            isKingDefeated = false;
-
-            field[i][j] = -2;
-
-        }
-
-        else
-
-            field[i][j] = 0;
-
-        moveCount--;
-
     }
 
+    return Op[N];
 }
 
+void task666() {
+    int N;  // Заданное число N
+    std::cin >> N;
+    int k = 2;   // Заданное число k
 
+    Result result = calculateMinimumOperations(N, k);
 
-// Функция проверки клетки на возможность хода
-
-bool checkCell(int i, int j, vector<vector<int>>& field, bool isKingDefeated)
-
-{
-
-    return (i < N && i >= 0 && j < M && j >= 0 &&
-
-        (field[i][j] == 0 || field[i][j] == -2 ||
-
-            (field[i][j] == 1 && isKingDefeated)));
-
-}
-
-
-
-// Вывод поля
-
-void showField(vector<vector<int>>& field)
-
-{
-
-    for (size_t i = 0; i < N; i++)
-
-    {
-
-        for (size_t j = 0; j < M; j++)
-
-        {
-
-            switch (field[i][j])
-
-            {
-
-            default:
-
-                cout << field[i][j] << '\t';
-
-                break;
-
-            case 0:
-
-                cout << "*\t";
-
-                break;
-
-            case -1:
-
-                cout << "F\t";
-
-                break;
-
-            }
-
-        }
-
-        cout << '\n';
-
-    }
+    std::cout << "Минимальное количество операций для получения k^N: " << result.count << std::endl;
+    std::cout << "Выражение для k^N: " << result.expression << std::endl;
 
 }
