@@ -21,6 +21,7 @@
 #include "BouncingBall.h"
 #include "Matrix.h"
 #include "MagicSquare.h"
+#include "NumberBoxes.h"
 #include "Temp.h"
 #include <iostream>
 using namespace std;
