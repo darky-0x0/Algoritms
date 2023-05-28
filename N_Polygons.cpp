@@ -7,7 +7,7 @@ void lab6task4() {
 
 	cout << "Данные взяты из файла";
 
-	string fileName = "N_Polygons2.txt";
+	string fileName = "N_Polygons3.txt";
 
 	
 
@@ -16,7 +16,8 @@ void lab6task4() {
 	fileRead(fileName, coordinates);
 	
 	vector<vector<float>> cost(coordinates.size(), vector<float>(coordinates.size())); //таблица для записи стоимостей
-	vector<vector<float>> diagonalsLength(coordinates.size(), vector<float>(coordinates.size()));
+	vector<vector<float>> diagonalsLength(coordinates.size(), vector<float>(coordinates.size())); //длины известных диагоналей
+	vector<vector<vector<pair<int, int>>>> finalDiagonals(coordinates.size(), vector<vector<pair<int, int>>>(coordinates.size())); //поле-дубликат стоимостей. Только вместо значений здесь вектора истории диагоналей из пар значений сторон 
 
 	cout << "\nДаны следующие координаты " << coordinates.size() << "-угольника: \n";
 	for (int i = 0; i < coordinates.size(); i++) cout << "(" << coordinates[i].first << ";" << coordinates[i].second << ") ";
@@ -27,7 +28,7 @@ void lab6task4() {
 
 	lengthOfAllDiagonals(diagonalsLength, coordinates); //нахождение размерности всех диагоналей
 
-	polygonsCut(diagonalsLength, cost, size); //основной цикл
+	polygonsCut(diagonalsLength, cost, size, finalDiagonals); //основной цикл
 
 
 
@@ -46,11 +47,18 @@ void lab6task4() {
 
 	cout << "\n\nМинимальный разрез фигуры: " << cost[0][size - 1];
 
+	cout << "\n\nНомера сторон разрезов(диагонали): ";
+
+	for (int i = 0; i < finalDiagonals[0][size - 1].size(); i++) {
+
+		cout << "(" <<finalDiagonals[0][size - 1][i].first + 1 << ";" << finalDiagonals[0][size - 1][i].second + 1 << "), ";
+	}
+
 }
 
 
 
-void polygonsCut(vector<vector<float>> diagonalsLength, vector<vector<float>>& cost, int size) {
+void polygonsCut(vector<vector<float>> diagonalsLength, vector<vector<float>>& cost, int size, vector<vector<vector<pair<int, int>>>>& finalDiagonals) {
 
 	int i(0); //точка относительного перебора
 
@@ -62,19 +70,36 @@ void polygonsCut(vector<vector<float>> diagonalsLength, vector<vector<float>>& c
 
 			vector<float> cuts; //хранит все возможные разрезы на данном диапазоне
 
+			vector<vector<pair<int, int>>> diagonals; //всевозможные комбинации диагоналей с данной фигуры
+
 			for (int i = k + 1; i < l; i++) { //пробегаемся по возможным точкам
 
-				float count(0);
+				float count(0); //локальный счётчик значения разрезов
+
+				vector<pair<int, int>> localDiagonals; //счётчик локальных диагоналей
+
+				if (i > k + 2) { //если фигура составная
+
+					count += cost[k][i]; //если одна из трёх под-фигур - составная, берём из вектора уже известную минимальную
+
+					for (int a = 0; a < finalDiagonals[k][i].size(); a++) localDiagonals.push_back(pair<int, int>(finalDiagonals[k][i][a].first, finalDiagonals[k][i][a].second)); //покоординатно пушбекаем минимальные диагонали фигуры i-l
+
+				}
+
+
+				if (i < l - 2) { //если фигура составная
+
+					count += cost[i][l]; //если одна из трёх под-фигур - составная, берём из вектора уже известную минимальную
+
+					for (int a = 0; a < finalDiagonals[i][l].size(); a++) localDiagonals.push_back(pair<int, int>(finalDiagonals[i][l][a].first, finalDiagonals[i][l][a].second)); //покоординатно пушбекаем минимальные диагонали фигуры i-l
+
+				}
 
 				if (i == k + 1) { //если (k;i) является ребром многоугольника (считаем вторую фигуру и (i;l))
 
 					count += diagonalsLength[i][l]; //плюсуем диагональ (i;l)
 
-					if (!(i == l - 2)) { //если (i;l) не является треугольником, в противном случае фигура с одной диагональю (n == 4)
-
-						count += cost[i][l]; //минимальная длина l-i+1-многоугольника
-
-					}
+					localDiagonals.push_back(pair<int, int>(i, l)); //пушбекаем диагональ
 
 				}
 
@@ -82,35 +107,43 @@ void polygonsCut(vector<vector<float>> diagonalsLength, vector<vector<float>>& c
 
 					count += diagonalsLength[k][i]; //плюсуем диагональ (k;i)
 
-					if (!(i == k + 2)) { //если (k;i) не является треугольником, в противном случае фигура с одной диагональю (n == 4)
-
-						count += cost[k][i]; //минимальная длина i-k+1-многоугольника
-
-					}
-
+					localDiagonals.push_back(pair<int, int>(k, i)); //пушбекаем диагональ
 
 				}
 				else { //если и (k;i), и (i;l) являются собственными диагоналями фигуры k-l
 
 					count += diagonalsLength[k][i]; //плюсуем диагональ (k;i)
 
-					if (!(i == k + 2)) count += cost[k][i]; //если одна из трёх под-фигур - составная, берём из вектора уже известную минимальную
+					localDiagonals.push_back(pair<int, int>(k, i)); //пушбекаем диагональ
 
-					count += diagonalsLength[i][l];
+					count += diagonalsLength[i][l]; //плюсуем диагональ (i;l)
 
-					if (!(i == l - 2)) count += cost[i][l]; //если одна из трёх под-фигур - составная, берём из вектора уже известную минимальную
+					localDiagonals.push_back(pair<int, int>(i, l)); //пушбекаем диагональ
 
 				}
 
+
 				cuts.push_back(count);
+
+				diagonals.push_back(localDiagonals); 
 
 			}
 
 			float minNum = cuts[0];
+			int position(0); //позиция минимального разреза в массиве
 
-			for (int s = 1; s < cuts.size(); s++) if (minNum > cuts[s]) minNum = cuts[s]; //вычисляем наименьший разрез диагоналей фигуры k-l
+			for (int s = 1; s < cuts.size(); s++) {
+				if (minNum >= cuts[s]) {
+
+					minNum = cuts[s]; //вычисляем наименьший разрез диагоналей фигуры k-l
+					position = s;
+
+				}
+			}
 
 			cost[k][l] = minNum; //минимальный размер диагоналей для фигуры k-l
+
+			finalDiagonals[k][l] = diagonals[position];
 
 		}
 

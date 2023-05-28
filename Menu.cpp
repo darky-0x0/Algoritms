@@ -272,17 +272,17 @@ bool menu(int lab, int key, bool rev)
 
 			break;
 
-		/*case 5: system("cls");
+		case 5: system("cls");
 
 			lab6task5();
 
-			break;*/
+			break;
 
-		/*case 6: system("cls");
+		case 6: system("cls");
 
 			lab6task6();
 
-			break;*/
+			break;
 
 		case 0: rev = false;
 
@@ -300,11 +300,11 @@ bool menu(int lab, int key, bool rev)
 
 		switch (key) {
 
-		/*case 1: system("cls");
+		case 1: system("cls");
 
 			lab7task1();
 
-			break;*/
+			break;
 
 		/*case 2: system("cls");
 
