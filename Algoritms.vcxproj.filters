@@ -96,6 +96,9 @@
     <ClCompile Include="NumberBoxes.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Resurces.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Temp.h">
@@ -174,6 +177,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="NumberBoxes.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Resurces.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -312,11 +312,11 @@ bool menu(int lab, int key, bool rev)
 
 			break;
 
-		/*case 3: system("cls");
+		case 3: system("cls");
 		
 			lab7task3();
 		
-			break;*/
+			break;
 		
 		/*case 4: system("cls");
 		

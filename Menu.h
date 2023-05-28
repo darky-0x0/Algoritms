@@ -22,6 +22,7 @@
 #include "Matrix.h"
 #include "MagicSquare.h"
 #include "NumberBoxes.h"
+#include "Resurces.h"
 #include "Temp.h"
 #include <iostream>
 using namespace std;

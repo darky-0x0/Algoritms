@@ -145,6 +145,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="NumberBoxes.cpp" />
     <ClCompile Include="N_Polygons.cpp" />
+    <ClCompile Include="Resurces.cpp" />
     <ClCompile Include="SearchInATDArray.cpp" />
     <ClCompile Include="SearchNumbersAlgorithms.cpp" />
     <ClCompile Include="SearchStringsAlgorithms.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="NumberBoxes.h" />
     <ClInclude Include="N_Polygons.h" />
+    <ClInclude Include="Resurces.h" />
     <ClInclude Include="SearchInATDArray.h" />
     <ClInclude Include="SearchNumbersAlgorithms.h" />
     <ClInclude Include="SearchStringsAlgorithms.h" />
