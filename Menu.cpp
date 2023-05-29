@@ -318,23 +318,23 @@ bool menu(int lab, int key, bool rev)
 		
 			break;
 		
-		/*case 4: system("cls");
+		case 4: system("cls");
 		
 			lab7task4();
 		
-			break;*/
-		
-		/*case 5: system("cls");
+			break;
+	
+		case 5: system("cls");
 		
 			lab7task5();
 		
-			break;*/
+			break;
 		
-		/*case 6: system("cls");
+		case 6: system("cls");
 		
 			lab7task6();
 		
-			break;*/
+			break;
 
 		case 8: system("cls");
 	
