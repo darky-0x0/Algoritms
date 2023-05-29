@@ -36,9 +36,18 @@ void lab7task6() {
 
 		if (statistic > -1) {
 
+			clock_t t1 = clock();
 			simpleSolution(array1, array2, statistic);
+			clock_t t2 = clock();
+			cout << "{" << (t2 - t1) << "}";
+			t1 = clock();
 			lessSimpleSolution(array1, array2, statistic);
-			cout << goodSolution(array1, array2, statistic, 0, array1.size() - 1, 0, array2.size() - 1);
+			t2 = clock();
+			cout << "{" << (t2 - t1) << "}";
+			t1 = clock();
+			cout << "\n" << statistic << "-ая статистика(хорошее решение): " << goodSolution(array1, array2, statistic, 0, array1.size() - 1, 0, array2.size() - 1);
+			t2 = clock();
+			cout << "{" << (t2 - t1) << "}";
 
 		}
 
@@ -54,7 +63,7 @@ void simpleSolution(vector<int>& const array1, vector<int>& const array2, int k)
 
 	int i(0), j(0); //указатели
 
-	while (i != array1.size()-1 || j != array2.size()-1) {
+	while (i < array1.size() && j < array2.size()) {
 
 		if (array1[i] > array2[j]) array.push_back(array2[j++]); //объединение двух массивов
 		else array.push_back(array1[i++]);
@@ -78,25 +87,68 @@ void lessSimpleSolution(vector<int>& const array1, vector<int>& const array2, in
 
 	int t(0); //число итераций
 
-	while (((t+1)!=k) && ((i != array1.size() - 1) || (j != array2.size() - 1))) { //выход, если итерация == искомой статистике или массив закончился
+	while (t!=k-1) { //выход, если итерация == искомой статистике
 
-		if (array1[i] > array2[j]) j++; 
-		else i++;
+		if ((i < array1.size() && j < array2.size())) { //если не вышли за пределы
 
-		t++;	//увеличиваем переменную интераций
+			if (array1[i] < array2[j]) i++;
+			else j++;
+
+				t++;	//увеличиваем переменную интераций
+
+		}
+		else {
+
+			if (i == array1.size()) { //если вышли за пределы в певом массиве
+
+				while (t != k - 1) {
+
+					j++;
+					t++;
+
+				}
+
+			}
+			else { //иначе во втором
+
+				while (t != k - 1) {
+
+					i++;
+					t++;
+
+				}
+
+			}
+
+		}
 
 	}
 
 	cout << "\n" << k << "-ая статистика(чуть менее простое решение): ";
 
-	if (array1[i] < array2[j]) {
+
+	if (i == array1.size()) { //если уткнулись в стенку в первом массиве
+
+		cout << array2[j];
+
+	}
+	else if (j == array2.size()) { //если уткнулись в стенку во втором массиве
 
 		cout << array1[i];
 
 	}
 	else {
 
-		cout  << array2[j];
+		if (array1[i] < array2[j]) {
+
+			cout << array1[i];
+
+		}
+		else {
+
+			cout << array2[j];
+
+		}
 
 	}
 
@@ -105,27 +157,36 @@ void lessSimpleSolution(vector<int>& const array1, vector<int>& const array2, in
 
 int goodSolution(vector<int>& const array1, vector<int>& const array2, int k, int firstIndA1, int lastIndA1, int firstIndA2, int lastIndA2) {
 
-	int i = ((lastIndA1+firstIndA1) / 2); //середина области первого массива
+	int iA1 = ((lastIndA1+firstIndA1) / 2); //середина области первого массива
 
-	int element = array1[i]; //i-ый элемент первого массива
+	int iA2 = ((lastIndA2 + firstIndA2) / 2); //середина области вторго массива
 
-	int j = binarySearch(array2, firstIndA2, lastIndA2, element); //находим больший элемент меньше i-го во втором массиве бинарным поиском
+	int elementA1 = array1[iA1]; //i-ый элемент первого массива
 
-	if (i + j == k - 2) { //если верно, возвращаем a[i]
+	int elementA2 = array2[iA2]; //i-ый элемент вторго массива
 
-		return array1[i];
+	int jA1 = binarySearch(array2, 0, array2.size()-1, elementA1); //находим больший элемент меньше iA1-го во втором массиве бинарным поиском
+
+	int jA2 = binarySearch(array1, 0, array1.size() - 1, elementA2); //находим больший элемент меньше iA2-го в первом массиве бинарным поиском
+
+	if ((iA1 + jA1 == k - 2) || (iA2 + jA2 == k - 2)) { //если верно, возвращаем a[i]
+
+		if(iA1 + jA1 == k - 2) return array1[iA1];
+		else return array2[iA2];
 
 	}
-	else if (i + j > k - 2) { //иначе если k < i+j, продлжаем поиск в левой части
+	else if ((iA1 + jA1 > k - 2) && (iA2 + jA2 > k - 2)) { //иначе если k < i+j, продлжаем поиск в левой части
 
-		return goodSolution(array2, array1, k, firstIndA2, j - 1, firstIndA1, i - 1);
+		return goodSolution(array2, array1, k, firstIndA2, jA1 - 1, firstIndA1, iA1 - 1);
 
 	}
 	else { //иначе продлжаем поиск в правой части
 
-		return goodSolution(array2, array1, k, j + 1, lastIndA2, i + 1, lastIndA1);
+		return goodSolution(array2, array1, k, jA1 + 1, lastIndA2, iA1 + 1, lastIndA1);
 
 	}
+
+
 
 }
 
