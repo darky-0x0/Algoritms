@@ -33,7 +33,9 @@ void lab4task7() {
 
 	fileRead(field, knight, king, fileName);
 
-	field[knight.first][knight.second] = -2; field[king.first][king.second] = -3;
+	startPosition.first = knight.first; startPosition.second = knight.second;
+
+	field[knight.first][knight.second] = -2; field[king.first][king.second] = -3; //значени€ дл€ инициализации вывода
 
 	cout << "»сходное поле:\n";
 
@@ -42,6 +44,8 @@ void lab4task7() {
 	field[knight.first][knight.second] = 1; field[king.first][king.second] = 0;
 
 	_getch();
+
+
 
 	AttilaKnight(field, N, knight, startPosition, king, result, count);
 

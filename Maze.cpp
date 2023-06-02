@@ -9,7 +9,7 @@ bool isEndMaze = false;
 
 void lab5task1() {
 
-	string fileName = "Maze2.txt";
+	string fileName = "Maze.txt";
 
 
 

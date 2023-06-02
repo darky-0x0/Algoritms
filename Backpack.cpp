@@ -106,7 +106,7 @@ void backpack2(vector<pair<int, int>> const items, int const size, vector<int>& 
 
 		if (k <= size-1) {
 
-			for (int i = 0; i == 0 || weightRemainder/(i * items[k].first) > 0; i++) {
+			for (int i = 0; i == 0 || weightRemainder/(i * items[k].first) > 0; i++) { 
 
 				itemIndexes[k] = i;
 

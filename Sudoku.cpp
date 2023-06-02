@@ -7,7 +7,7 @@ bool isEndSudoku = false;
 
 void lab5task4() {
 
-	string fileName = "Sudoku2.txt";
+	string fileName = "Sudoku3.txt";
 
 
 	vector<vector<int>> field(9, vector<int>(9, 0)); //основное поле
@@ -25,13 +25,11 @@ void lab5task4() {
 
 	_getch();
 
-	if (isEndSudoku == true) {
+	if (isEndSudoku != true) {
 
-		cout << "\n\nРешение: \n";
-		printField(field, result);
+		cout << "\nДанный судоку не имеет решения\n";
 	
 	}
-	else cout << "\nДанный судоку не имеет решения\n";
 
 
 	isEndSudoku = false;
@@ -45,7 +43,7 @@ void sudoku(vector<vector<int>> const field, vector<pair<pair<int, int>, int>>& 
 
 		isEndSudoku = true;
 
-		result = emptyCells;
+		printField(field, emptyCells);
 
 	}
 	else {
@@ -54,9 +52,9 @@ void sudoku(vector<vector<int>> const field, vector<pair<pair<int, int>, int>>& 
 
 		possibleSteps(steps, field, emptyCells, count);
 
-		for (int i = 0; i < steps.size(); i++) { //перебираем шаги
+		for (int i : steps) { //перебираем шаги
 
-			emptyCells[count].second = steps[i]; //делаем шаг
+			emptyCells[count].second = i; //делаем шаг
 
 			sudoku(field, emptyCells, result, count + 1);
 
